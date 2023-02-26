@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd
+        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="serfinanza-lib-001" author="ogonzalez">
+            <validCheckSum>ANY</validCheckSum>
+            <sqlFile path="db/scripts/001-create-database.sql" encoding="UTF-8" splitStatements="true"/>
+            <rollback>
+                <sqlFile path="db/scripts/001-create-database.sql" encoding="UTF-8" />
+            </rollback>
+        </changeSet>
+
+</databaseChangeLog>
