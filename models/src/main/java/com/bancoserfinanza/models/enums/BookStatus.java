@@ -6,10 +6,10 @@ import lombok.ToString;
 @Getter
 @ToString
 public enum BookStatus {
-	ACTIVE("Active"),
-	INACTIVE("Inactive"),
-	TAKEN("Taken"),
-	DELIVERED("Delivered");
+	ACTIVE("Activo"),
+	INACTIVE("Inactivo"),
+	TAKEN("Prestado"),
+	DELIVERED("Entregado");
 
 	private final String name;
 

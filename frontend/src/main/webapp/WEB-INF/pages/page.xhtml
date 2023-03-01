@@ -1,0 +1,90 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:jsf="http://xmlns.jcp.org/jsf"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jstl/core"
+>
+    <h:form id="datatable-books">
+        <p:commandButton icon="pi pi-plus" actionListener="#{crudBookView.openNew()}"
+                         update=":dialogs:manage-book-content" oncomplete="PF('manageBookDialog').show()"
+                         styleClass="rounded-button ui-button-info" >
+        </p:commandButton>
+        <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-book-content"
+                         oncomplete="PF('manageBookDialog').show()"
+                         styleClass="edit-button rounded-button ui-button-success">
+            <f:setPropertyActionListener value="#{crudBookView.openNew()}" target="#{crudBookView.selectedBook}" />
+        </p:commandButton>
+
+        <p:dataTable id="dt-books" widgetVar="dtBooks" var="book" value="#{crudBookView.books}"
+                 reflow="true" styleClass="books-table" selection="#{crudBookView.selectedBooks}"
+                 rowKey="#{book.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+        <p:column headerText="IDLIB">
+            <h:outputText value="#{book.idlib}" />
+        </p:column>
+        <p:column headerText="Nombre del Libro">
+            <h:outputText value="#{book.bookName}" />
+        </p:column>
+        <p:column headerText="Status">
+            <h:outputText value="#{book.status.text}" />
+        </p:column>
+        <p:column exportable="false">
+            <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-book-content"
+                             oncomplete="PF('manageBookDialog').show()"
+                             styleClass="edit-button rounded-button ui-button-success">
+                <f:setPropertyActionListener value="#{book}" target="#{crudBookView.selectedBook}" />
+            </p:commandButton>
+            <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                             process="@this"
+                             oncomplete="PF('deleteBookDialog').show()">
+                <f:setPropertyActionListener value="#{book}" target="#{crudBookView.selectedBook}" />
+            </p:commandButton>
+        </p:column>
+
+    </p:dataTable>
+    </h:form>
+
+<h:form id="dialogs">
+<p:dialog header="Book Details" showEffect="fade" modal="true" widgetVar="manageBookDialog"
+          responsive="true">
+    <p:outputPanel id="manage-book-content" class="ui-fluid">
+        <p:outputPanel>
+            <p:inputText id="bookId" value="#{crudBookView.selectedBook.id}" type="hidden" required="true" />
+            <div class="field" id="#{crudBookView.selectedBook.id}">
+                <p:outputLabel for="bookName">Nombre del Libro</p:outputLabel>
+                <p:inputText id="bookName" value="#{crudBookView.selectedBook.bookName}" required="true" />
+            </div>
+            <div class="field">
+                <p:outputLabel for="idlib">IDLIB</p:outputLabel>
+                <p:inputText id="idlib" value="#{crudBookView.selectedBook.idlib}" />
+            </div>
+        </p:outputPanel>
+    </p:outputPanel>
+
+    <f:facet name="footer">
+        <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{crudBookView.saveBook()}"
+                         update="manage-book-content" process="manage-book-content @this" ajax="false"/>
+        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageBookDialog').hide()"
+                         class="ui-button-secondary" type="button" />
+    </f:facet>
+</p:dialog>
+
+<p:confirmDialog widgetVar="deleteBookDialog" showEffect="fade" width="300"
+                 message="Delete the book?" header="Confirm" severity="warn">
+    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudBookView.deleteBook}"
+                     process="@this" update=":form:delete-books-button"
+                     oncomplete="PF('deleteBookDialog').hide()" />
+    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                     onclick="PF('deleteBookDialog').hide()" />
+</p:confirmDialog>
+
+<p:confirmDialog global="true" showEffect="fade" width="300">
+    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                     icon="pi pi-times" />
+</p:confirmDialog>
+</h:form>
+        </ui:composition>

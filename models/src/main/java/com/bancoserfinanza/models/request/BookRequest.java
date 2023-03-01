@@ -1,5 +1,6 @@
 package com.bancoserfinanza.models.request;
 
+import com.bancoserfinanza.models.enums.BookStatus;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import java.io.Serializable;
 @Setter
 @ToString
 public class BookRequest implements Serializable {
+    private Long id;
 
     @Valid
     @NotNull(message = "idlib can not null")
@@ -20,5 +22,7 @@ public class BookRequest implements Serializable {
     @Valid
     @NotNull(message = "bookName can not null")
     private String bookName;
+
+    private BookStatus status;
 
 }

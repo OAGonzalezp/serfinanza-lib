@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Set;
 
 @Getter
@@ -22,9 +23,10 @@ public class TakenBooks {
     @ManyToOne
     private Customer customer;
 
-    private String questionStr;
+    @Column(name = "takenDate", nullable = false)
+    private Date takenDate;
 
-    @ManyToOne
-    private Book customerFeedback;
+    @Column(name = "deliveryDate", nullable = false)
+    private Date deliveryDate;
 
 }

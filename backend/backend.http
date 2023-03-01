@@ -1,0 +1,17 @@
+###
+POST http://localhost:8080/v0/book
+Content-Type: application/json
+
+{
+  "bookName" : "100 años de soledad",
+  "idlib" : "DDFFSED2233322123"
+}
+
+###
+POST http://localhost:8080/v0/book
+Content-Type: application/json
+
+{
+  "bookName" : "100 años de soledad",
+  "idlib" : "DDFFSED2233322123"
+}

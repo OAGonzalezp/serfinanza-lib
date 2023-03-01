@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jstl/core"
+      xmlns:t="http://xmlns.jcp.org/jsf/composite/components"
+>
+
+<f:view contentType="text/html;charset=UTF-8" encoding="UTF-8">
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <div class="card crud-demo">
+            <h:form id="form">
+                <p:growl id="messages" showDetail="true" />
+                <p:toolbar>
+                    <p:toolbarGroup>
+                        <p:commandButton value="Prestamos" icon="pi pi-list" actionListener="#{dtBasicView.changeOption('prestamos')}"
+                                         styleClass="ui-button-info" style="margin-right: .5rem"  ajax="false">
+                        </p:commandButton>
+                        <p:commandButton value="Libros" icon="pi pi-book" actionListener="#{dtBasicView.changeOption('libros')}"
+                                         styleClass="ui-button-info" style="margin-right: .5rem" ajax="false">
+                        </p:commandButton>
+                        <p:commandButton value="Clientes" icon="pi pi-users" actionListener="#{dtBasicView.changeOption('clientes')}"
+                                         styleClass="ui-button-info" style="margin-right: .5rem" ajax="false">
+                        </p:commandButton>
+                        <p:commandButton id="delete-books-button" value="#{crudView.deleteButtonMessage}"
+                                         icon="pi pi-trash" actionListener="#{crudView.deleteSelectedItems}"
+                                         styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedItems()}" update="@this">
+                            <p:confirm header="Confirmation" message="Delete the selected books?"
+                                       icon="pi pi-exclamation-triangle" />
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                    <p:toolbarGroup align="right">
+                        <p:commandButton value="Actualizar" icon="pi pi-refresh" styleClass="ui-button-help" ajax="false"
+                                         actionListener="PF('dlg3').show()">
+                        </p:commandButton>
+                    </p:toolbarGroup>
+                </p:toolbar>
+            </h:form>
+            <ui:include src="/WEB-INF/pages/page.xhtml" />
+            <c:if test="#{dtBasicView.option eq 'prestamos'}">
+                <h:form>
+                    <div class="card" id="libro-tab">
+                    </div>
+                </h:form>
+            </c:if>
+        </div>
+    </h:body>
+</f:view>
+
+</html>
