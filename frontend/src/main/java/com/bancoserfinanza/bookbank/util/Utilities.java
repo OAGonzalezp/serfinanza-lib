@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.ResponseBody;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.LinkedHashMap;
 
 public class Utilities {
@@ -14,6 +15,16 @@ public class Utilities {
         DataResponse<T> response = new DataResponse<>();
         try {
             return mapper.readValue(body.string(), clazz);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public static <T>T convertResponse(String body, Class<? extends T> clazz) {
+
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.readValue(body, clazz);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

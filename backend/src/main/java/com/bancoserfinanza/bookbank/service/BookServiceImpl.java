@@ -27,6 +27,11 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public void delete(Long bookId) {
+        bookDAO.delete(bookId);
+    }
+
+    @Override
     public List<BookResponse> getBooks() {
         return bookDAO.getBooks();
     }

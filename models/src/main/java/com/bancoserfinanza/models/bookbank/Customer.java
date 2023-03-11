@@ -30,6 +30,6 @@ public class Customer {
     private Date dateOfBirth;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<TakenBooks> takenBooks;
+    private Set<LoanBook> loanBooks;
 
 }

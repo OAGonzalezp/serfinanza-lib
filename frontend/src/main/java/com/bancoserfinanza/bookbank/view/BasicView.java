@@ -1,6 +1,8 @@
 package com.bancoserfinanza.bookbank.view;
 
 import com.bancoserfinanza.bookbank.controller.BookService;
+import com.bancoserfinanza.bookbank.controller.CustomerService;
+import com.bancoserfinanza.bookbank.controller.LoanBookService;
 import com.bancoserfinanza.bookbank.util.Utilities;
 import com.bancoserfinanza.models.response.BookResponse;
 import com.bancoserfinanza.models.response.BookListResponseData;
@@ -27,9 +29,9 @@ public class BasicView implements Serializable {
     @Getter
     private List<BookResponse> books;
     private final OkHttpClient httpClient = new OkHttpClient();
-
-    @Inject
-    private BookService service;
+    private LoanBookService service = new LoanBookService();
+    private CustomerService customerService = new CustomerService();
+    private BookService bookService = new BookService();
 
     @PostConstruct
     public void postConstruct() {
@@ -37,40 +39,15 @@ public class BasicView implements Serializable {
 
     public void changeOption(String option) {
         this.option = option;
+    }
+
+
+
+    public void loadData() {
         switch (option) {
-            case "prestamos": loadBooks(); break;
+            case "prestamos": service.loadLoanBooks(); break;
+            case "clientes": customerService.loadCustomers(); break;
+            case "libros": bookService.loadBooks(); break;
         }
-    }
-
-    public void loadBooks() {
-        try {
-            sendGetBooks();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private void sendGetBooks() throws Exception {
-
-        Request request = new Request.Builder()
-                .url("http://localhost:8080/v0/book")
-                .build();
-
-        try (Response response = httpClient.newCall(request).execute()) {
-
-            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
-
-            // Get response body
-            BookListResponseData responseData = Utilities.unmarshalResponse(response.body(), BookListResponseData.class);
-            if (responseData.getCode() == 1) {
-                books = responseData.getData();
-            } else {
-                books = new ArrayList<>();
-            }
-        }
-
-    }
-    public void setService(BookService service) {
-        this.service = service;
     }
 }

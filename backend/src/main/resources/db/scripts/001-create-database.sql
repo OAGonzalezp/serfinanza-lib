@@ -29,6 +29,7 @@ CREATE TABLE `bk_taken_books` (
   `taken_date` datetime(6) NOT NULL,
   `book_id` bigint DEFAULT NULL,
   `customer_id` bigint DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `book_id_fk` (`book_id`),
   KEY `customer_id_fk` (`customer_id`),

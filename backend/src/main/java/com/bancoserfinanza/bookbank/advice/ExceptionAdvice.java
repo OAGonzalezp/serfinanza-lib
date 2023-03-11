@@ -1,7 +1,6 @@
 package com.bancoserfinanza.bookbank.advice;
 
-import com.bancoserfinanza.bookbank.exception.BookNotCreatedException;
-import com.bancoserfinanza.bookbank.exception.BookNamePalindromeException;
+import com.bancoserfinanza.bookbank.exception.*;
 import com.bancoserfinanza.models.enums.ResponseCodes;
 import com.bancoserfinanza.models.response.DataResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +42,33 @@ public class ExceptionAdvice {
         return new ResponseEntity(ResponseCodes.NOK_BOOK_NOT_CREATED, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(CustomerNotCreatedException.class)
+    @ResponseBody
+    public ResponseEntity<DataResponse> customerCreateNOK(final CustomerNotCreatedException ex) {
+        return new ResponseEntity(ResponseCodes.NOK_CUSTOMER_NOT_CREATED, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BookTakenFoundException.class)
+    @ResponseBody
+    public ResponseEntity<DataResponse> bookTakenNOK(final BookTakenFoundException ex) {
+        return new ResponseEntity(ResponseCodes.NOK_BOOK_TAKEN, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(BookNotFoundException.class)
+    @ResponseBody
+    public ResponseEntity<DataResponse> bookNotFoundNOK(final BookNotFoundException ex) {
+        return new ResponseEntity(ResponseCodes.NOK_BOOK_NOT_FOUND, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(LoanBookNotCreatedException.class)
+    @ResponseBody
+    public ResponseEntity<DataResponse> loanBookCreateNOK(final LoanBookNotCreatedException ex) {
+        return new ResponseEntity(ResponseCodes.NOK_LOAN_BOOK_NOT_CREATED, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(BookNamePalindromeException.class)
     @ResponseBody
-    public ResponseEntity<DataResponse> takePalindromeBookAttempt(final BookNotCreatedException ex) {
+    public ResponseEntity<DataResponse> takePalindromeBookAttempt(final BookNamePalindromeException ex) {
         return new ResponseEntity(ResponseCodes.NOK_PALINDROME_BOOK_NAME, HttpStatus.BAD_REQUEST);
     }
 

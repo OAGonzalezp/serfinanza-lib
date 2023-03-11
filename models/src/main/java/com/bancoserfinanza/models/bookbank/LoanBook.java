@@ -1,17 +1,17 @@
 package com.bancoserfinanza.models.bookbank;
 
+import com.bancoserfinanza.models.enums.BookStatus;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Set;
 
 @Getter
 @Setter
 @Entity
 @Table(name = "BK_TakenBooks")
-public class TakenBooks {
+public class LoanBook {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -24,9 +24,12 @@ public class TakenBooks {
     private Customer customer;
 
     @Column(name = "takenDate", nullable = false)
-    private Date takenDate;
+    private Date loanDate;
 
     @Column(name = "deliveryDate", nullable = false)
     private Date deliveryDate;
+
+    @Enumerated(EnumType.STRING)
+    private BookStatus status;
 
 }

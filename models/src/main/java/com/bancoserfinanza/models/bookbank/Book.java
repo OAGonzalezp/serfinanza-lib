@@ -27,7 +27,7 @@ public class Book implements Serializable {
     private BookStatus status;
 
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<TakenBooks> takenBooks;
+    private Set<LoanBook> loanBooks;
 
     @Column(name = "lastTakenDate")
     private Date lastTakenDate;

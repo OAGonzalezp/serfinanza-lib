@@ -1,0 +1,110 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:jsf="http://xmlns.jcp.org/jsf"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jstl/core"
+>
+    <h:form id="datatable-loanBooks">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton icon="pi pi-plus" actionListener="#{crudLoanBookView.openNew()}"
+                                 update=":dialogs:manage-loanBook-content" oncomplete="PF('manageLoanBookDialog').show()"
+                                 styleClass="rounded-button ui-button-info" >
+                </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Actualizar" icon="pi pi-refresh" styleClass="ui-button-help" ajax="false"
+                                 actionListener="#{crudLoanBookView.loadData()}">
+                </p:commandButton>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <p:dataTable id="dt-loanBooks" widgetVar="dtLoanBooks" var="loanBook" value="#{crudLoanBookView.loanBooks}"
+                     reflow="true" styleClass="loanBooks-table" selection="#{crudLoanBookView.selectedLoanBooks}"
+                     rowKey="#{loanBook.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+            <p:column headerText="Libro">
+                <h:outputText value="#{loanBook.book.bookName}" />
+            </p:column>
+            <p:column headerText="Prestador">
+                <h:outputText value="#{loanBook.customer.firstName}" />
+            </p:column>
+            <p:column headerText="Fecha de prestamo">
+                <h:outputText value="#{loanBook.loanDate}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Fecha de entrega">
+                <h:outputText value="#{loanBook.deliveryDate}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Status">
+                <h:outputText value="#{loanBook.status.name}" />
+            </p:column>
+            <p:column exportable="false">
+                <p:commandButton icon="pi pi-undo" update=":dialogs:manage-loanBook-content"
+                                 oncomplete="PF('manageLoanBookDialog').show()"
+                                 disabled="#{loanBook.status.name eq 'Entregado'}"
+                                 styleClass="edit-button rounded-button ui-button-success">
+                    <f:setPropertyActionListener value="#{loanBook}" target="#{crudLoanBookView.selectedLoanBook}" />
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+
+<h:form id="dialogs">
+<p:dialog header="LoanBook Details" showEffect="fade" modal="true" widgetVar="manageLoanBookDialog"
+          responsive="true">
+    <p:outputPanel id="manage-loanBook-content" class="ui-fluid">
+        <p:outputPanel>
+            <p:inputText id="loanBookId" value="#{crudLoanBookView.selectedLoanBook.id}" type="hidden"/>
+            <div class="field">
+                <p:outputLabel value="Libro" for="@next"/>
+                <p:autoComplete dropdown="true" value="#{crudLoanBookView.selectedLoanBook.book}"
+                                itemLabel="#{book.bookName}"
+                                converter="#{bookConverter}" var="book"
+                                completeEndpoint="#{crudLoanBookView.urlBook}" scrollHeight="250"/>
+            </div>
+            <div class="field">
+                <p:outputLabel value="Cliente" for="@next"/>
+                <p:autoComplete id="dd" dropdown="true" value="#{crudLoanBookView.selectedLoanBook.customer}"
+                                itemLabel="#{customer.firstName}"
+                                converter="#{customerConverter}" var="customer"
+                                completeEndpoint="#{crudLoanBookView.urlCustomer}" scrollHeight="250"/>
+            </div>
+            <div class="field">
+                <p:outputLabel for="dateOfBirth">Fecha de entrega</p:outputLabel>
+                <p:datePicker id="dateOfBirth" value="#{crudLoanBookView.selectedLoanBook.deliveryDate}" />
+            </div>
+        </p:outputPanel>
+    </p:outputPanel>
+
+    <f:facet name="footer">
+        <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{crudLoanBookView.saveLoanBook()}"
+                         update="manage-loanBook-content" process="manage-loanBook-content @this" ajax="false"/>
+        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageLoanBookDialog').hide()"
+                         class="ui-button-secondary" type="button" />
+    </f:facet>
+</p:dialog>
+
+<p:confirmDialog widgetVar="deleteLoanBookDialog" showEffect="fade" width="300"
+                 message="Delete the loanBook?" header="Confirm" severity="warn">
+    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudLoanBookView.deleteLoanBook}"
+                     process="@this"
+                     oncomplete="PF('deleteLoanBookDialog').hide()" />
+    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                     onclick="PF('deleteLoanBookDialog').hide()" />
+</p:confirmDialog>
+
+<p:confirmDialog global="true" showEffect="fade" width="300">
+    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                     icon="pi pi-times" />
+</p:confirmDialog>
+</h:form>
+        </ui:composition>

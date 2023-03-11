@@ -1,0 +1,108 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:jsf="http://xmlns.jcp.org/jsf"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:c="http://java.sun.com/jstl/core"
+>
+
+    <h:form id="datatable-customers">
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton icon="pi pi-plus" actionListener="#{crudCustomerView.openNew()}"
+                                 update=":dialogs:manage-customer-content" oncomplete="PF('manageCustomerDialog').show()"
+                                 styleClass="rounded-button ui-button-info" >
+                </p:commandButton>
+            </p:toolbarGroup>
+            <p:toolbarGroup align="right">
+                <p:commandButton value="Actualizar" icon="pi pi-refresh" styleClass="ui-button-help" ajax="false"
+                                 actionListener="#{crudCustomerView.loadData()}">
+                </p:commandButton>
+            </p:toolbarGroup>
+        </p:toolbar>
+
+        <p:dataTable id="dt-customers" widgetVar="dtCustomers" var="customer" value="#{crudCustomerView.customers}"
+                     reflow="true" styleClass="customers-table" selection="#{crudCustomerView.selectedCustomers}"
+                     rowKey="#{customer.id}" paginator="true" rows="10" rowSelectMode="add" paginatorPosition="bottom">
+
+            <p:column headerText="Nombre">
+                <h:outputText value="#{customer.firstName}" />
+            </p:column>
+            <p:column headerText="Apellido">
+                <h:outputText value="#{customer.lastName}" />
+            </p:column>
+            <p:column headerText="Identificacion">
+                <h:outputText value="#{customer.identification}" />
+            </p:column>
+            <p:column headerText="Fecha Nacimiento">
+                <h:outputText value="#{customer.dateOfBirth}" >
+                    <f:convertDateTime pattern="dd/MM/yyyy" />
+                </h:outputText>
+            </p:column>
+            <p:column exportable="false">
+                <p:commandButton icon="pi pi-pencil" update=":dialogs:manage-customer-content"
+                                 oncomplete="PF('manageCustomerDialog').show()"
+                                 styleClass="edit-button rounded-button ui-button-success">
+                    <f:setPropertyActionListener value="#{customer}" target="#{crudCustomerView.selectedCustomer}" />
+                </p:commandButton>
+                <p:commandButton class="ui-button-warning rounded-button" icon="pi pi-trash"
+                                 process="@this"
+                                 oncomplete="PF('deleteCustomerDialog').show()">
+                    <f:setPropertyActionListener value="#{customer}" target="#{crudCustomerView.selectedCustomer}" />
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+
+<h:form id="dialogs">
+<p:dialog header="Customer Details" showEffect="fade" modal="true" widgetVar="manageCustomerDialog"
+          responsive="true">
+    <p:outputPanel id="manage-customer-content" class="ui-fluid">
+        <p:outputPanel>
+            <p:inputText id="customerId" value="#{crudCustomerView.selectedCustomer.id}" type="hidden"/>
+            <div class="field" >
+                <p:outputLabel for="firstName">Nombre</p:outputLabel>
+                <p:inputText id="firstName" value="#{crudCustomerView.selectedCustomer.firstName}" required="true" />
+            </div>
+            <div class="field">
+                <p:outputLabel for="lastName">Apellido</p:outputLabel>
+                <p:inputText id="lastName" value="#{crudCustomerView.selectedCustomer.lastName}" />
+            </div>
+            <div class="field">
+                <p:outputLabel for="identification">Identificacion</p:outputLabel>
+                <p:inputText id="identification" value="#{crudCustomerView.selectedCustomer.identification}" />
+            </div>
+            <div class="field">
+                <p:outputLabel for="dateOfBirth">Fecha de Nacimiento</p:outputLabel>
+                <p:datePicker id="dateOfBirth" value="#{crudCustomerView.selectedCustomer.dateOfBirth}" />
+            </div>
+        </p:outputPanel>
+    </p:outputPanel>
+
+    <f:facet name="footer">
+        <p:commandButton value="Guardar" icon="pi pi-check" actionListener="#{crudCustomerView.saveCustomer()}"
+                         update="manage-customer-content" process="manage-customer-content @this" ajax="false"/>
+        <p:commandButton value="Cancelar" icon="pi pi-times" onclick="PF('manageCustomerDialog').hide()"
+                         class="ui-button-secondary" type="button" />
+    </f:facet>
+</p:dialog>
+
+<p:confirmDialog widgetVar="deleteCustomerDialog" showEffect="fade" width="300"
+                 message="Delete the customer?" header="Confirm" severity="warn">
+    <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{crudCustomerView.deleteCustomer}"
+                     process="@this"
+                     oncomplete="PF('deleteCustomerDialog').hide()" />
+    <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                     onclick="PF('deleteCustomerDialog').hide()" />
+</p:confirmDialog>
+
+<p:confirmDialog global="true" showEffect="fade" width="300">
+    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                     icon="pi pi-times" />
+</p:confirmDialog>
+</h:form>
+        </ui:composition>

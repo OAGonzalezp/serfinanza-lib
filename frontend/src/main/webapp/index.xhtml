@@ -28,26 +28,17 @@
                         <p:commandButton value="Clientes" icon="pi pi-users" actionListener="#{dtBasicView.changeOption('clientes')}"
                                          styleClass="ui-button-info" style="margin-right: .5rem" ajax="false">
                         </p:commandButton>
-                        <p:commandButton id="delete-books-button" value="#{crudView.deleteButtonMessage}"
-                                         icon="pi pi-trash" actionListener="#{crudView.deleteSelectedItems}"
-                                         styleClass="ui-button-danger" disabled="#{!crudView.hasSelectedItems()}" update="@this">
-                            <p:confirm header="Confirmation" message="Delete the selected books?"
-                                       icon="pi pi-exclamation-triangle" />
-                        </p:commandButton>
-                    </p:toolbarGroup>
-                    <p:toolbarGroup align="right">
-                        <p:commandButton value="Actualizar" icon="pi pi-refresh" styleClass="ui-button-help" ajax="false"
-                                         actionListener="PF('dlg3').show()">
-                        </p:commandButton>
                     </p:toolbarGroup>
                 </p:toolbar>
             </h:form>
-            <ui:include src="/WEB-INF/pages/page.xhtml" />
             <c:if test="#{dtBasicView.option eq 'prestamos'}">
-                <h:form>
-                    <div class="card" id="libro-tab">
-                    </div>
-                </h:form>
+                <ui:include src="/WEB-INF/pages/loanBooks.xhtml" />
+            </c:if>
+            <c:if test="#{dtBasicView.option eq 'clientes'}">
+                <ui:include src="/WEB-INF/pages/customers.xhtml" />
+            </c:if>
+            <c:if test="#{dtBasicView.option eq 'libros'}">
+                <ui:include src="/WEB-INF/pages/books.xhtml" />
             </c:if>
         </div>
     </h:body>

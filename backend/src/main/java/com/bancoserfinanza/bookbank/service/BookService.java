@@ -11,6 +11,7 @@ public interface BookService {
 
     Optional<Book> save(BookRequest bookRequest);
     Optional<Book> update(BookRequest bookRequest);
+    void delete(Long bookId);
 
     List<BookResponse> getBooks();
 }

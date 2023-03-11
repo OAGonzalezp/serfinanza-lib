@@ -45,6 +45,16 @@ public class BookDAOImpl implements BookDAO {
     }
 
     @Override
+    public void delete(Long bookId) {
+        Book book = iBookRepository.getById(bookId);
+        if (book == null) {
+            throw new IllegalArgumentException("Book not found");
+        }
+
+        iBookRepository.delete(book);
+    }
+
+    @Override
     public List<BookResponse> getBooks() {
         List<Book> books = iBookRepository.findAll();
         return books.stream().map(x -> BookResponse.build(x)).collect(Collectors.toList());

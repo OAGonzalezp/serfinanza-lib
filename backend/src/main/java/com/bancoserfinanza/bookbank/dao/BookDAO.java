@@ -11,5 +11,7 @@ public interface BookDAO {
     Book save(BookRequest bookRequest);
     Book update(BookRequest bookRequest);
 
+    void delete(Long bookId);
+
     List<BookResponse> getBooks();
 }

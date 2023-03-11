@@ -34,4 +34,13 @@ public class BookResponse {
 
         return bookResponse;
     }
+    public static BookResponse build(BookRequest book) {
+        BookResponse bookResponse = new BookResponse();
+        bookResponse.setId(book.getId());
+        bookResponse.setIdlib(book.getIdlib());
+        bookResponse.setBookName(book.getBookName());
+        bookResponse.setStatus(book.getStatus());
+
+        return bookResponse;
+    }
 }

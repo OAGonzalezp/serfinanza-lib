@@ -3,6 +3,7 @@ package com.bancoserfinanza.bookbank.view;
 import com.bancoserfinanza.bookbank.controller.BookService;
 import com.bancoserfinanza.models.request.BookRequest;
 import com.bancoserfinanza.models.response.BookResponse;
+import lombok.Getter;
 import org.primefaces.PrimeFaces;
 
 import javax.annotation.PostConstruct;
@@ -24,11 +25,12 @@ public class CrudBookView implements Serializable {
     private BookResponse selectedBook;
     private List<BookResponse> selectedBooks;
 
+    @Getter
     private BookService service = new BookService();
 
     @PostConstruct
     public void postConstruct() {
-        this.books = service.loadBooks();
+        this.loadBooks();
     }
 
     public void setSelectedBook(BookResponse selectedBook) {
@@ -44,22 +46,28 @@ public class CrudBookView implements Serializable {
         return this.selectedBook;
     }
 
+    public void loadBooks() {
+        this.books = service.loadBooks();
+    }
+
     public void saveBook() {
         ExternalContext ec = FacesContext.getCurrentInstance().getExternalContext();
         String bookName = ec.getRequestParameterMap().get("dialogs:bookName");
         String idlib = ec.getRequestParameterMap().get("dialogs:idlib");
         String id = ec.getRequestParameterMap().get("dialogs:bookId");
+        boolean save = true;
 
         BookRequest request = new BookRequest();
 
-        if (id != null) {
+        if (id != null && !id.isEmpty()) {
             request.setId(Long.parseLong(id));
+            save = false;
         }
 
         request.setIdlib(idlib);
         request.setBookName(bookName);
 
-        BookResponse response = request.getId() != null ? service.updateBook(request) : service.updateBook(request);
+        BookResponse response = save ? service.saveBook(request) : service.updateBook(request);
 
         if (response != null ) {
             this.books = service.loadBooks();
